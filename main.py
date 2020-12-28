@@ -1,3 +1,4 @@
+import importlib.machinery
 import inspect
 
 MAX_CHR = 25565
@@ -8,8 +9,9 @@ VAR_MAPPER_FUNC = f"""[setattr(sys.modules[__name__], ({OBFUSCATOR_FUNC})(v), ch
 exec(VAR_MAPPER_FUNC)
 
 # The code import
-input_file = __import__('shiba_term')
-lines: str = inspect.getsource(input_file)
+loader = importlib.machinery.SourceFileLoader('shiba_term', 'shiba_term.py')
+code = loader.get_code('shiba_term')
+lines: str = inspect.getsource(code)
 
 # Encoder
 encoded_file =[
